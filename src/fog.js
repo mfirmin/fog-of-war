@@ -177,8 +177,8 @@ export class Fog {
 
                 void main() {
                     vec3 L = normalize(lightsource);
-                    vec2 p = vPosition.xz / 10.0 + 0.5 + 0.05 * t;
-                    float noise = simplex3d_fractal(vec3(p * 8.0, t * 0.5));
+                    vec2 p = vPosition.xz / 10.0 + 0.5 + 0.02 * t;
+                    float noise = simplex3d_fractal(vec3(p * 8.0, t * 1.0));
 
                     noise = 0.5 + 0.5 * noise;
 
