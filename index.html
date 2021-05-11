@@ -49,7 +49,9 @@ title: Michael Firmin
 
       const height = width * texture.image.height / texture.image.width;
 
-      clouds = new fog.Fog(width, height, 0.1);
+      const depth = 0.5;
+
+      clouds = new fog.Fog3D(width, height, depth, 0.2);
 
       renderer.add(clouds);
 

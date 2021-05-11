@@ -47,7 +47,7 @@ export class Renderer {
 
         this.camera = new PerspectiveCamera(fov, aspect, 0.01, 500.0);
 
-        const pos = new Vector3(0, 10, 0);
+        const pos = new Vector3(0, 10, 10);
         const rot = new Matrix4().makeRotationFromEuler(
             new Euler(0.0, 0, 0, 'ZYX'),
         );
