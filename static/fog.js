@@ -47872,9 +47872,12 @@
 	        this.material = new ShaderMaterial({
 	            transparent: true,
 	            uniforms: {
-	                lightsource: { type: 'v3', value: [0, 200, 200] },
+	                lightsource: { type: 'v3', value: [1, 1, 0.0] },
 	                t: { type: 'f', value: 0.0 },
-	                revealPoint: { type: 'v3', value: [0, 0, 0] }
+	                revealPoint: { type: 'v3', value: [0, 0, 0] },
+	            },
+	            extensions: {
+	                derivatives: true,
 	            },
 	            vertexShader: `
                 varying vec3 vPosition;
@@ -48000,20 +48003,42 @@
 
                 void main() {
                     vec3 L = normalize(lightsource);
-                    vec2 p = vPosition.xz / 10.0 + 0.5 + 0.1 * t;
-                    float noise = simplex3d_fractal(vec3(p * 10.0, t));
+                    vec2 p = vPosition.xz / 10.0 + 0.5 + 0.05 * t;
+                    float noise = simplex3d_fractal(vec3(p * 8.0, t * 0.5));
 
                     noise = 0.5 + 0.5 * noise;
-                    vec3 color = vec3(noise);
 
-                    float alpha = pow(color.r, 0.01);
-                    // alpha = 1.0;
+                    float alpha = pow(noise, 0.01);
+                    alpha = 1.0;
 
                     float reveal = length(vPosition - revealPoint);
 
                     if (reveal < 1.0) {
                         alpha *= smoothstep(0.8, 1.0, reveal);
                     }
+
+                    float dpx = dFdx(vPosition.x);
+                    float dpy = dFdy(vPosition.z);
+
+                    // float dNoiseX = dFdx(pow(noise, 0.1));
+                    // float dNoiseY = dFdy(pow(noise, 0.1));
+                    float dNoiseX = dFdx(pow(noise, 0.01));
+                    float dNoiseY = dFdy(pow(noise, 0.01));
+
+                    vec3 tangentX = normalize(vec3(dpx, dNoiseX, 0.0));
+                    vec3 tangentY = normalize(vec3(0.0, dNoiseY, dpy));
+
+                    vec3 N = normalize(cross(tangentX, tangentY));
+
+                    vec3 color = vec3(1.0);
+
+                    color *= dot(normalize(lightsource), N) * pow(noise, 0.5) * 1.5;
+
+                    // color.r = N.x;
+                    // color.g = N.y;
+                    // color.b = N.z;
+
+                    // color *= noise;
 
                     gl_FragColor = vec4(color, alpha);
                 }
