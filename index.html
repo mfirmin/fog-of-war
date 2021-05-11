@@ -27,9 +27,12 @@ title: Michael Firmin
     mainElement.append(renderer.element);
 
     let t = 0;
+    let clouds;
 
     const dt = 0.001;
     function go() {
+      clouds.setTime(t);
+
       renderer.render();
       requestAnimationFrame(go);
 
@@ -39,11 +42,17 @@ title: Michael Firmin
     const tl = new fog.TextureLoader();
 
     tl.load("assets/map.png", (texture) => {
-      // texture.image.flipY = false;
-
+      const width = 10;
       // Load mesh
       const map = new fog.Image(texture, 10);
       renderer.add(map);
+
+      const height = width * texture.image.height / texture.image.width;
+
+      clouds = new fog.Fog(width, height, 0.1);
+
+      renderer.add(clouds);
+
       go();
     });
   </script>

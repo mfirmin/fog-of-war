@@ -49,7 +49,7 @@ export class Renderer {
 
         const pos = new Vector3(0, 10, 0);
         const rot = new Matrix4().makeRotationFromEuler(
-            new Euler(0.4, 0, 0, 'ZYX'),
+            new Euler(0.0, 0, 0, 'ZYX'),
         );
 
         const newPos = pos.applyMatrix4(rot);
@@ -130,7 +130,6 @@ export class Renderer {
     }
 
     render() {
-        this.renderShadowmap();
         this.renderer.render(this.scene, this.camera);
     }
 

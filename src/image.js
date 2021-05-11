@@ -118,28 +118,12 @@ export class Image {
                     vec3 N = normalize(vNormal);
                     vec3 L = normalize(lightsource);
 
-                    float bias = shadowTolerance * tan(acos(dot(N, L)));
-                    bias = clamp(bias, 0.0, 0.05);
-
-                    float shadow = 0.0;
-                    float rhs = shadowcoord.z - bias;
-
-                    vec2 texelSize = vec2(1.0 / 2048.0);
-
-                    for (int x = -1; x <= 1; ++x) {
-                        for (int y = -1; y <= 1; ++y) {
-                            float pcfDepth = texture2D(shadowmap, shadowcoord.xy + vec2(x, y) * texelSize).r;
-                            shadow += shadowcoord.z - bias > pcfDepth ? 1.0 : 0.0;
-                        }
-                    }
-                    shadow /= 9.0;
-
                     float d = max(0.0, dot(N, L));
                     float a = 0.3;
 
                     vec3 color = texture2D(image, vUv).rgb;
 
-                    gl_FragColor = vec4((a + (1.0 - shadow) * d) * color, 1.0);
+                    gl_FragColor = vec4((a + d) * color, 1.0);
                 }
             `,
         });
