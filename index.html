@@ -1,0 +1,51 @@
+---
+title: Michael Firmin
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Fog of War Demo</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/fog.css">
+    <script src="static/fog.js"></script>
+  </head>
+<body>
+  <div id="main"></div>
+
+  <script>
+    const mainElement = document.getElementById('main');
+
+    document.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    }, false);
+
+    // Set up renderer
+    const renderer = new fog.Renderer(mainElement.offsetWidth, mainElement.offsetHeight)
+
+    mainElement.append(renderer.element);
+
+    let t = 0;
+
+    const dt = 0.001;
+    function go() {
+      renderer.render();
+      requestAnimationFrame(go);
+
+      t += dt;
+    }
+
+    const tl = new fog.TextureLoader();
+
+    tl.load("assets/map.png", (texture) => {
+      // texture.image.flipY = false;
+
+      // Load mesh
+      const map = new fog.Image(texture, 10);
+      renderer.add(map);
+      go();
+    });
+  </script>
+</body>
+</html>

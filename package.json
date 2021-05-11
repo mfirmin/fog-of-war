@@ -1,0 +1,26 @@
+{
+  "name": "fog-of-war-demo",
+  "version": "0.0.0",
+  "description": "Vegetation Animation",
+  "scripts": {
+    "build": "./node_modules/.bin/rollup --config rollup.config.js",
+    "watch": "./node_modules/rollup/dist/bin/rollup --watch --config rollup.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfirmin/fog-of-war"
+  },
+  "author": "Michael Firmin",
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jsx-a11y": "*",
+    "eslint-plugin-react": "*",
+    "rollup": "*",
+    "rollup-plugin-node-globals": "*",
+    "rollup-plugin-node-resolve": "*",
+    "rollup-plugin-commonjs": "*",
+    "rollup-plugin-replace": "*"
+  }
+}
