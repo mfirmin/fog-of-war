@@ -55,6 +55,13 @@ title: Michael Firmin
 
       go();
     });
+
+    mainElement.addEventListener("mousemove", (event) => {
+      const pt = renderer.intersectPlane(event.clientX, event.clientY);
+
+      clouds.setRevealPoint(pt);
+    });
+
   </script>
 </body>
 </html>

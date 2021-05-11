@@ -136,4 +136,28 @@ export class Renderer {
     get element() {
         return this.renderer.domElement;
     }
+
+    intersectPlane(x, y) {
+        const vec = new Vector3(
+            (x / this.renderer.domElement.width) * 2 - 1,
+            -(y / this.renderer.domElement.height) * 2 + 1,
+            0.5,
+        );
+
+        vec.unproject(this.camera);
+
+        const dir = vec.sub(this.camera.position).normalize();
+
+        const o = new Vector3().copy(this.camera.position);
+
+        const p = new Vector3(0, 0, 0);
+        const n = new Vector3(0, 1, 0);
+
+        const q = new Vector3().addVectors(
+            o,
+            dir.multiplyScalar((new Vector3().copy(p).sub(o)).dot(n) / dir.dot(n)),
+        );
+
+        return q;
+    }
 }

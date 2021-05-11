@@ -48,6 +48,7 @@ export class Fog {
             uniforms: {
                 lightsource: { type: 'v3', value: [0, 200, 200] },
                 t: { type: 'f', value: 0.0 },
+                revealPoint: { type: 'v3', value: [0, 0, 0] }
             },
             vertexShader: `
                 varying vec3 vPosition;
@@ -59,6 +60,7 @@ export class Fog {
             `,
             fragmentShader: `
                 uniform vec3 lightsource;
+                uniform vec3 revealPoint;
                 uniform float t;
 
                 varying vec3 vPosition;
@@ -181,6 +183,12 @@ export class Fog {
                     float alpha = pow(color.r, 0.01);
                     // alpha = 1.0;
 
+                    float reveal = length(vPosition - revealPoint);
+
+                    if (reveal < 1.0) {
+                        alpha *= smoothstep(0.8, 1.0, reveal);
+                    }
+
                     gl_FragColor = vec4(color, alpha);
                 }
             `,
@@ -197,5 +205,11 @@ export class Fog {
 
     setTime(t) {
         this.group.children[0].material.uniforms.t.value = t;
+    }
+
+    setRevealPoint(pt) {
+        this.group.children[0].material.uniforms.revealPoint.value.x = pt.x;
+        this.group.children[0].material.uniforms.revealPoint.value.y = pt.y;
+        this.group.children[0].material.uniforms.revealPoint.value.z = pt.z;
     }
 }
