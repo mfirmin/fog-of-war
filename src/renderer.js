@@ -130,6 +130,11 @@ export class Renderer {
     }
 
     render() {
+        for (const entity of this.entities) {
+            if (entity.setCameraPosition) {
+                entity.setCameraPosition(this.camera.position);
+            }
+        }
         this.renderer.render(this.scene, this.camera);
     }
 
